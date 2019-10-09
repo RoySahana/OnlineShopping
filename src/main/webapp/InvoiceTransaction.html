@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Transaction Page</title>
+</head>
+<body>
+	<div ng-app="mainApp" ng-controller="listCtrl as list"> 
+	
+	<table border = "1">
+
+		 <tr>
+		 	 <th>ID </th>
+		 	 <th> INVOICE ID </th>
+		 	 <th>TOTAL AMOUNT </th>
+		 	 <th> CREATION TIME </th>
+		 </tr>
+		 
+		 <tr ng-repeat="invoice in transaction">
+	 
+	          <td>{{invoice.id}}</td>
+	          
+	          <td>{{invoice.invoiceId}}</td>
+	 
+	          <td>{{invoice.totalAmount}}</td>
+	 
+	          <td>{{invoice.creationTime}}</td>
+	 
+		 </tr>
+	</table>
+			 
+	</div>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	
+	<script>
+   		angular.module('mainApp', [])
+   		.controller ('listCtrl', function($scope, $http){
+   			
+   			var url = "http://localhost:8080/invoiceTransaction";
+   			$http.get(url).then(function (response){
+   				
+   				var i = 0;
+   				$scope.transaction = [];
+   				
+   			   for(i = 0; i < response.data.length; i++) {
+       	    	var details = {};
+       	    	details.id = response.data[i].id;
+       	    	details.invoiceId = response.data[i].invoiceId;
+       	    	details.totalAmount = response.data[i].totalAmount;
+       	  		details.creationTime = response.data[i].creationTime;
+       	     
+       	      
+       	      $scope.transaction.push(details);
+       	      
+       	     }
+       	    
+   				
+   			});
+   			
+   		});
+</script>
+</body>
+</html>

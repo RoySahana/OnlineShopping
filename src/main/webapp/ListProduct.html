@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>List Product</title>
+</head>
+<body>
+	<div ng-app="mainApp" ng-controller="listCtrl as list"> 
+	<table border = "1">
+
+		 <tr>
+		 	 <th>Product Id </th>
+		 	 <th> Product Name </th>
+		 	 <th> Price </th>
+		 	 <th> Quantity </th>
+		 </tr>
+
+		 
+		 <tr ng-repeat="prod in products" ng-click = "buyProduct(prod)">
+	 
+	          <td>{{prod.productId}}</td>
+	 
+	          <td>{{prod.productName}}</td>
+	 
+	          <td>{{prod.productPrice}}</td>
+	 
+	          <td ><input type = "text" ng-model = "prod.stock"/></td>
+	        
+	          <td><button ng-click = "updateProduct(prod)">Update</button></td>
+	          
+		 </tr>
+		
+	</table>	
+	</br>
+	<table border = "1">
+
+		 <tr>
+		 	 <th>Product Id </th>
+		 	 <th> Product Name </th>
+		 	 <th> Price </th>
+		 	 <th> Quantity </th>
+		 </tr>
+		 
+		 <tr ng-repeat="buy in purchased">
+	 
+	          <td>{{buy.productId}}</td>
+	 
+	          <td>{{buy.productName}}</td>
+	 
+	          <td>{{buy.productPrice}}</td>
+	 
+	          <td>{{buy.quantity}}</td>	
+		 </tr>
+
+	<button ng-click = "finalPurchase()">Buy</button>
+	</table>
+		
+	
+	 
+	</div>
+	<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+	
+	<script>
+   angular.module('mainApp', [])
+   .controller('listCtrl', function($scope,$http) {
+       
+      
+      
+    	
+    	   var url="http://localhost:8080/listProduct";
+    	   $http.get(url).then( function(response) {
+    	   
+    		   var i = 0;
+    		   $scope.products = [];
+    		   
+    	    for(i = 0; i < response.data.length; i++) {
+    	    	var product = {};
+    	      product.productId = response.data[i].productId;
+    	      product.productName = response.data[i].productName;
+    	      product.productPrice = response.data[i].productPrice;
+    	      product.stock = response.data[i].stock;
+    	      
+    	      $scope.products.push(product);
+    	      
+    	     }
+    	    
+    	   
+    	   });
+    	   
+    	   $scope.updateProduct = function(prod){
+    		   var url = "http://localhost:8080/updateProduct";
+   			$http.post(url,JSON.stringify(prod)).then(function(response){
+   				
+    	   });
+    	   }
+    	   
+    	   
+    	   $scope.purchased = [];
+    	  $scope.buyProduct = function(product){
+    		  var found = false;
+    		  
+    		 if($scope.purchased.length > 0){
+    			 
+    			 for(var a = 0; a < $scope.purchased.length;a++){
+    				
+       			  if(product.id == $scope.purchased[a].id){
+       				  $scope.purchased[a].quantity = $scope.purchased[a].quantity + 1;
+       				 
+       				  found = true;
+       		 			break;
+       			  }
+    		 }  
+    		
+    		 }
+    		 if(!found){
+    			 var boughtProduct = {};
+       			 
+       		      boughtProduct.id = product.id;
+      			  boughtProduct.productName = product.productName;
+      			  boughtProduct.productPrice = product.productPrice;
+      			  boughtProduct.quantity = 1;
+      			
+      			  $scope.purchased.push(boughtProduct);
+      			
+    		 }
+    	   for(var i = 0; i < $scope.products.length;i++){
+    		   
+    		   if(product.id == $scope.products[i].id){
+    			   $scope.products[i].stock = $scope.products[i].stock - 1;
+    			   break; 
+    		   }
+    	   }
+    	  }
+    	 $scope.finalPurchase = function(){
+    		 
+			var url = "http://localhost:8080/buyProduct";
+			$http.post(url,JSON.stringify($scope.purchased)).then(function(response){
+				
+			});
+    	 }
+       
+   });
+</script>
+</body>
+</html>

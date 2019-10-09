@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<script src="http://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<script>
+   angular.module('MyApp', [])
+   .controller('MyCntrl', function($scope,$http) {
+       var pn = this;
+      
+       pn.submit = function() {
+    	
+    	   var url="http://localhost:8080/addProduct?name="+pn.name+"&price="+pn.price+"&description=" +pn.description+"&stock="+pn.stock;
+    	   $http.get(url).then( function(response) {
+    	      
+    	      alert("Hello");
+    	   });
+       };
+   });
+</script>
+<body>
+
+<div ng-app="MyApp" ng-controller="MyCntrl as pn">
+
+ <p>Enter Product Name: <input type = "text" ng-model = "pn.name"></p>
+ <p>Enter Product Price: <input type = "number" ng-model = "pn.price"></p>
+ <p>Enter Product Description: <input type = "text" ng-model = "pn.description"></p>
+ <p>Enter Stock: <input type = "number" ng-model = "pn.stock"></p>
+ <input type='button' ng-click="pn.submit()" value="Submit" /> 
+</div>
+
+</body>
+</html>
