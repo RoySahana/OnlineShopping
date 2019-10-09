@@ -1,15 +1,15 @@
 package bean;
-/**Commens*/
+/**Comment*/
 public class ProductBean {
 	private int id;
 	private String productName;
-	private int productPrice; 
+	private int productPrice;
 	private String productDescription;
 	private int stock;
 	private String transactionType;
 	private int productId;
-	
-	
+
+
 	public int getProductId() {
 		return productId;
 	}
@@ -28,7 +28,7 @@ public class ProductBean {
 	public void setId(int id) {
 		this.id = id;
 	}
-	
+
 	public String getProductName() {
 		return productName;
 	}
@@ -38,7 +38,7 @@ public class ProductBean {
 	public int getProductPrice() {
 		return productPrice;
 	}
-	
+
 	public void setProductPrice(int productPrice) {
 		this.productPrice = productPrice;
 	}
@@ -54,6 +54,6 @@ public class ProductBean {
 	public void setStock(int stock) {
 		this.stock = stock;
 	}
-	
-	
+
+
 }
