@@ -1,5 +1,5 @@
 package bean;
-
+/**Comments*/
 public class ProductBean {
 	private int id;
 	private String productName;
